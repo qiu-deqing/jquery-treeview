@@ -7,7 +7,9 @@
     options: {
       // 渲染对象格式要求：树形结构，包含name属性用于显示
       // 无根节点的树形数据结构
-      data: {} // 需要渲染的数据，如果传入的为json字符串，解析为对象
+      data: {}, // 需要渲染的数据，如果传入的为json字符串，解析为对象
+      nodedelete: function () {}, // 节点删除默认处理程序
+      nodeselected: function () {} // 节点被点击默认处理程序
     }, // end options
     
     _create: function ()
@@ -42,13 +44,19 @@
         // 监听删除节点点击事件，处理删除
         this._root.find(".node-delete").on("click", function (event) {
           var target = $(event.target);
-          treeviewself._dataDelete(treeviewself.options.data, target.parent().data("name"));
-          console.log(JSON.stringify(treeviewself.options.data));
           target.parent().remove();
           treeviewself._labelLastNode();
-          treeviewself._trigger("nodedelete");
+          treeviewself._trigger("nodedelete", null, target.parent());
           event.stopPropagation();
         });
+        
+        // 监听节点点击事件，提供用户操作
+        this._root.find(".nodecontent").on("click", function (event) {
+          var target = $(event.target);
+          treeviewself._trigger("nodeselected", null, target.parent());
+          event.stopPropagation();
+        });
+        
         this._labelLastNode();
       } // end if
     }, // end _create()
@@ -60,7 +68,7 @@
     _createNode: function (node)
     {
       // 生成默认节点
-      var root = $("<li></li>").append($("<span></span>").append(node.name))
+      var root = $("<li></li>").append($("<span></span>").append(node.name).addClass("nodecontent"))
         .attr("data-name", node.name)
         .append($("<span></span>").addClass("node-delete"));
       
@@ -90,29 +98,15 @@
         this._root.find("li:last-child()").not(".collapsable").addClass("lastleaf")
           .end().filter(".collapsable").addClass("lastnode");
     }, // end _labelLastNode()
-    
-    // 递归删除包含name为val的节点及其子节点
-    // @return: 在本节点删除成功返回true，在当前节点子节点删除成功不返回true
-    _dataDelete: function (node, val)
+
+    removeNode: function (name)
     {
-      if (node.name === val)
-      {
-        delete node.name;
-        delete node.children;
-        return true;
-      }
-      if (typeof node.children !== "undefined")
-      {
-        for (var i = 0; i < node.children.length; ++i)
-        {
-          // 如果在此节点删除成功，删除此节点，不再继续删除
-          if(this._dataDelete(node.children[i], val))
-          {
-            delete node.children.splice(i, 1);
-          } // end if
-        } // end for
-      } // end if
-    } // end _dataDelete()
+      this._root.find("li").filter(function () {
+        var self = $(this);
+        return self.data("name") === name;
+      }).remove();
+    } // end removeNode()
+    
     
     
   });

@@ -16,6 +16,45 @@
 <body>
   <div id="treeContainer">
   </div>
+  <div>
+    <input type="text" id="name" value="bbb"/>
+    <input type="button" id="deleteNode" value="删除节点"/>
+  </div>
+  <section>
+    <h2>treeview用户手册</h2>
+    <p>treeview概述：根据用户指定数据渲染treeview，可指定回调函数，当节点被选中、删除时调用handler，
+    也可根据name值删除指定节点，treeview所有操作只修改dom节点，不修改用户传入数据（可通过初始化
+    treeview时传入对应handler，在handler中包含数据操作）</p>
+    <section>
+      <h3>调用方法</h3>
+      <p>$(selector).treeview(options)
+      <ul>
+        <li>作用：对指定元素根据options渲染treeview，在options中配置数据已经针对特定事件调用handler</li>
+        <li><span>selector设置需要渲染数据的容器，一般为设置合理宽度的block元素</span></li>
+        <li><span>options为传递的参数其中包含:{data: {}, nodedelete: function(event, ui){},
+        nodeselected: function (event, ui) {}}</span>
+          <ul>
+            <li>data为需要渲染的树型数据结构，每个节点包含数据类型为string的name属性，
+            非叶节点包含数据类型为array的children属性，children元素数据类型满足节点定义</li>
+            <li>nodedelete为用户点击删除按钮时触发的事件，其中ui为被删除的节点在文档中对应控件，
+            ui.data("name")返回被删除节点的name，通过这个值可自定义数据操作,
+            event.type为treeviewnodedelete</li>
+            <li>nodeselected为用户点击节点时出发的时间，其中ui为被选中的节点在文档中对应控件，
+            ui.data("name")返回被选中节点的name，通过这个值可以获取信息自定义数据操作</li>
+          </ul>
+        </li>
+      </ul>
+      </p>
+      <p>$(selector).treeview("removeNode", name)
+        <ul>
+          <li>作用：删除treeview中包含指定name值的节点</li>
+          <li>selector为执行过treeview初始化的元素，此方法调用删除其name值与参数相同的节点</li>
+          <li>name：需要删除的name属性的值，如aaa则方法删除在selector下创建treeview时所有name为aaa的
+          节点对应的dom</li>
+        </ul>
+      </p>
+    </section>
+  </section>
 	<script src="js/jquery.js"></script>
   <script src="js/jquery-ui-core.js"></script>
   <script src="jquery-ui-treeview.js">
@@ -23,6 +62,7 @@
   
   </script>
   <script>
+  $(function () {
   var data = {
     name: "root",
     children: [
@@ -48,11 +88,23 @@
   
 
   
-  
-  $("#treeContainer").treeview({"data": data});
-  $("#treeContainer").on("treeviewnodedelete", function (event) {
-    console.log(data);
+  $("#treeContainer").treeview({"data": data,
+    nodedelete: function (event, ui)
+    {
+      console.log("deleted node: " + ui.data("name"));
+    }, // end nodedelete()
+    nodeselected: function (event, ui)
+    {
+      console.log("selected node: " + ui.data("name"));
+    }
   });
+  
+  $("#deleteNode").click(function () {
+    $("#treeContainer").treeview("removeNode", $("#name").val());
+  });
+ 
+  }(jQuery));
+ 
   </script>
 </body>
 </html>
