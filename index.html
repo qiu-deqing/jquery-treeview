@@ -1,0 +1,121 @@
+﻿<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>Template Index</title>
+  <link href="css/jquery-ui-treeview.css" rel="stylesheet">
+  <style>
+  </style>
+
+	
+</head>
+<body>
+  <div id="treeContainer">
+  </div>
+	<script src="js/jquery.js"></script>
+  <script src="js/jquery-ui-core.js"></script>
+  <script src="jquery-ui-treeview.js">
+  
+  
+  </script>
+  <script>
+  var data = {
+    name: "root",
+    children: [
+      {
+        name: "aaa"
+      },
+      {
+        name: "bbb",
+        children: [
+          {
+            name: "b1"
+          },
+          {
+            name: "b2"
+          }
+        ]
+      },
+      {
+        name: "ccc",
+      }
+    ]
+  };
+  
+
+  
+  
+  $("#treeContainer").treeview({"data": data});
+  $("#treeContainer").on("treeviewnodedelete", function (event) {
+    console.log(data);
+  });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

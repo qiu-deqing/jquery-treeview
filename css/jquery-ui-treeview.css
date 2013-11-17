@@ -1,0 +1,80 @@
+﻿.treeview ,
+.treeview ul,
+.treeview li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.file {
+  display: inline-block;
+  width: 15px;
+  height: 14px;
+  background-image: url(../img/file.gif);
+}
+
+.treeview li {
+  padding-left: 16px;
+  background: url(../img/treeview-default-line.gif) 0 0 no-repeat;
+}
+.treeview li.collapsable {
+  background-position: 0 -176px;
+}
+.treeview li.lastleaf {
+  background-position: 0 -1766px;
+}
+.treeview li.lastnode {
+  background-position: 0 -2000px;
+}
+.sign {
+  margin-left: -16px;
+  float: left;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.folder-close > .sign {
+  background-image: url(../img/plus.gif);
+}
+.folder-open > .sign {
+  background-image: url(../img/minus.gif);
+}
+.folder {
+  width: 16px;
+  height: 14px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: inline-block;
+}
+.folder-open > .folder {
+  background-image: url(../img/folder.gif);
+}
+.folder-close > .folder {
+  background-image: url(../img/folder-closed.gif);
+}
+.treeview span {
+  cursor: pointer;
+}
+.node-delete {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(../img/delete.png) center bottom no-repeat;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
